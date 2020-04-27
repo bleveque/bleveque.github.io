@@ -101,11 +101,11 @@ export default ({ tvOn, setTvOn, tvChannel, setTvChannel, tvEdgeModeOn, setTvEdg
   return {
     stringRenderData: [
       // instruction text
-      { type: 'text', data: { start: [tvLeft,7], text: 'Press "ON" in the bottom right to watch some Unicode TV!' }},
-      { type: 'text', data: { start: [tvLeft,9], text: 'Press the number buttons to change the resolution.' }},
+      { type: 'text', data: { start: [tvLeft,contentTop], text: 'Press "ON" in the bottom right to watch some Unicode TV!' }},
+      { type: 'text', data: { start: [tvLeft,contentTop + 2], text: 'Press the number buttons to change the resolution.' }},
 
       // tv box
-      { type: 'textrect', data: { start: [tvLeft,10], width: tvWidth, text: tv }},
+      { type: 'textrect', data: { start: [tvLeft,tvTop], width: tvWidth, text: tv }},
 
       // tv off/on
       { type: 'text', data: { start: [tvLeft + tvOffLeftOffset, tvTop + tvOnOffTopOffset], text: 'OFF', props: { className: `clickable ${tvOn ? '' : 'selected'}`, onClick: () => setTvOn(false) } }},

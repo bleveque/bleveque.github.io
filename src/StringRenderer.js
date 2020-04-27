@@ -103,6 +103,8 @@ class StringRenderer {
   //  push other non-relative text down, so it may cause overlaps
   renderText(out, chunkMetadata, inputData, relativeY) {
     let { text, start: [x, y], isYRelative } = inputData;
+    x = this.parseWidth(x);
+    y = this.parseHeight(out, y);
     if (isYRelative) y += relativeY;
     if (x < 0) x += this.width;
 
@@ -151,6 +153,8 @@ class StringRenderer {
   // note: inputData reference may be shared by multiple chunkMetadata entries
   renderTextrect(out, chunkMetadata, inputData, relativeY) {
     let { text, start: [x, y], width, isYRelative } = inputData;
+    x = this.parseWidth(x);
+    y = this.parseHeight(out, y);
     if (isYRelative) y += relativeY;
     if (x < 0) x += this.width;
 
@@ -203,7 +207,7 @@ class StringRenderer {
   }
 
   parseWidth(dim) {
-    return typeof dim === 'number' ? dim : (parseFloat(dim) * this.width / 100);
+    return typeof dim === 'number' ? dim : Math.floor(parseFloat(dim) * this.width / 100);
   }
 
   parseHeight(chars, dim) {
