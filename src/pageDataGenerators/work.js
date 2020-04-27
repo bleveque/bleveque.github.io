@@ -1,3 +1,6 @@
+import { contentOffsets } from '../constants';
+const [left, top] = contentOffsets;
+
 const introText = '\
 In 2014, I joined Floored, a real estate tech startup specializing in \
 space visualization and optimization problems, as a full-stack engineer. \
@@ -101,11 +104,11 @@ Some projects I\'ve enjoyed:\n\
 export default () => {
   return {
     stringRenderData: [
-      { type: 'text', data: { start: [14,6], maxWidth: 80, text: introText }},
-      { type: 'textrect', data: { start: [14 + flooredLeftOffset,2], isYRelative: true, width: flooredLogoWidth, text: flooredLogo, props: { className: 'floored-purple' } }},
-      { type: 'text', data: { start: [14,4], isYRelative: true, maxWidth: 80, text: transitionText }},
-      { type: 'textrect', data: { start: [14,3], isYRelative: true, width: cbreBuilderHatWidth, text: cbreBuilderHat, props: { className: 'cbre' } }},
-      { type: 'text', data: { start: [14,4], isYRelative: true, maxWidth: 80, text: endingText }}
+      { type: 'text', data: { start: [left,top], maxWidth: 80, text: introText }},
+      { type: 'textrect', data: { start: [left + flooredLeftOffset,2], isYRelative: true, width: flooredLogoWidth, text: flooredLogo, props: { className: 'floored-purple' } }},
+      { type: 'text', data: { start: [left,4], isYRelative: true, maxWidth: 80, text: transitionText }},
+      { type: 'textrect', data: { start: [left,3], isYRelative: true, width: cbreBuilderHatWidth, text: cbreBuilderHat, props: { className: 'cbre' } }},
+      { type: 'text', data: { start: [left,4], isYRelative: true, maxWidth: 80, text: endingText }}
     ]
   };
 };

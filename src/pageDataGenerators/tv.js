@@ -141,6 +141,8 @@ export default ({ tvOn, setTvOn, tvChannel, setTvChannel, tvEdgeModeOn, setTvEdg
       const height = screenHeight * singleCharHeight;
       const tvFontSize = fontSize / tvDimMultiplier;
 
+      console.log(`tv container: ${left}, ${top}, ${width}, ${top}, ${tvDimMultiplier}, ${singleCharWidth}, ${singleCharHeight}, ${verticalCharPadding}`);
+
       return [
         <div key="tv-container" style={{left:`${left}px`, top:`${top}px`, width:`${width}px`, height:`${height}px`, position:'absolute', fontSize:`${tvFontSize}px`, lineHeight:`${tvFontSize}px`}}>
           <TV

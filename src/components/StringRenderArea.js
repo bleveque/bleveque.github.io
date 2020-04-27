@@ -43,6 +43,8 @@ class StringRenderArea extends React.Component {
     this.singleCharHeight = charHeight - verticalCharPadding;
     this.verticalCharPadding = verticalCharPadding;
 
+    console.log('SINGLE RENDER AREA:', this.singleCharWidth, this.singleCharHeight, this.verticalCharPadding);
+
     this.resize();
     if (this.props.onSetCharDims) this.props.onSetCharDims(this.singleCharWidth, this.singleCharHeight, this.verticalCharPadding);
   }

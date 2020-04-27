@@ -14,8 +14,8 @@ export default (onNavClick) => {
   return [
     // top info
     { type: 'text', data: { start: [navWidth + 2, 1], text: 'Ben(jamin) LeVeque' }},
-    { type: 'text', data: { start: [-(email.length + 3), 1], text: email }},
-    { type: 'text', data: { start: [-(linkedin.length + 3), 2], text: linkedin, props: { href: 'https://www.linkedin.com/in/benjamin-leveque-5a534361/' } }},
+    { type: 'text', data: { start: [-(email.length + 3), 2], text: email }},
+    { type: 'text', data: { start: [-(linkedin.length + 3), 3], text: linkedin, props: { href: 'https://www.linkedin.com/in/benjamin-leveque-5a534361/' } }},
 
     // left nav
     { type: 'text', data: { start: [navTextLeft, topBarHeight + 1], text: 'Home', props: getNavProps(onNavClick, 'home') }},
