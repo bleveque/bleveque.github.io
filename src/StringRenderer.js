@@ -124,15 +124,17 @@ class StringRenderer {
       if (x >= this.width && !inputData.maxWidth) continue;
 
       if (inputData.maxWidth) {
-        if (x >= this.width || x - initX + 1 > inputData.maxWidth) {
+        const rightMargin = inputData.rightMargin || 0;
+        if (x >= this.width - rightMargin  || x - initX + 1 > inputData.maxWidth) {
           x = initX;
           y++;
+          if (text[i] === ' ') i++;
         } else if (text[i] === ' ') { // break lines on spaces
           const nextNewlineIdx = text.indexOf('\n', i + 1);
           const nextSpaceIdx = text.indexOf(' ', i + 1); // NOTE: current implementation requires a space at the end of wrapped text in order to wrap the last word correctly
           const nextBreakIdx = (nextNewlineIdx === -1 || nextSpaceIdx === -1) ? Math.max(nextSpaceIdx, nextNewlineIdx) : Math.min(nextSpaceIdx, nextNewlineIdx);
           const nextBreakX = (nextBreakIdx - i) + x; // (index within text of next break - current index in text) + current x == x of next break
-          if (nextBreakIdx > 0 && (nextBreakX > this.width || nextBreakX - initX + 1 > inputData.maxWidth)) {
+          if (nextBreakIdx > 0 && (nextBreakX > this.width - rightMargin || nextBreakX - initX + 1 > inputData.maxWidth)) {
             x = initX;
             y++;
             i++;
