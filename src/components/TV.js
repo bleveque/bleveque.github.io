@@ -2,6 +2,8 @@ import React from 'react';
 import StringRenderArea from './StringRenderArea';
 import ImageConverter from '../ImageConverter';
 
+let numRenders = 0;
+
 class TV extends React.Component {
   constructor(props) {
     super(props);
@@ -20,12 +22,17 @@ class TV extends React.Component {
     this.videoRef = React.createRef();
     this.canvasRef = React.createRef();
 
+    this.frameData = null;
+    this.frameConfig = {};
+
     this.setCharDims = this.setCharDims.bind(this);
   }
 
   componentDidMount() {
     this.interval = setInterval(() => {
-      this.forceUpdate();
+      if (this.shouldRender()) {
+        this.forceUpdate();
+      }
     }, 1000 / this.refreshRate);
   }
 
@@ -39,6 +46,8 @@ class TV extends React.Component {
       { type: 'textrect', data: { start: [0,0], width: this.getCharWidthTvUnits(), text: (new Array(this.getCharWidthTvUnits() * this.getCharHeightTvUnits() + 1)).join('#') }}
     ];
   }
+
+
 
   getElementsFromVideo() {
     const video = this.videoRef.current;
@@ -72,12 +81,18 @@ class TV extends React.Component {
     this.setState({ singleCharWidth, singleCharHeight, verticalCharPadding });
   }
 
+  shouldRender() {
+    return true;
+  }
+
   render() {
     let elements;
+    // numRenders++;
+    // if (numRenders % 10 === 0) console.log('numRenders', numRenders);
 
     if (this.props.on && this.videoRef.current && this.videoRef.current.videoHeight) {
       if (this.state.paused) {
-        this.videoRef.current.pause();
+        if (!this.videoRef.current.paused) this.videoRef.current.pause();
       } else if (this.videoRef.current.paused) {
         this.videoRef.current.play();
       }
