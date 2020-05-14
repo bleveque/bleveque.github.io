@@ -64,6 +64,7 @@ const HomePage = () => {
     <div className="root" style={{ fontSize: `${FONT_SIZE}px`, lineHeight: `${FONT_SIZE}px` }}>
       <StringRenderArea
         className="home-background"
+        fontSize={FONT_SIZE}
         data={[...stringRenderData, ...navRenderData]}
         childElementDataGenerator={(!newPageData && stringRenderChildElementDataGenerator)}
         newData={newPageData}

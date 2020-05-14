@@ -227,9 +227,9 @@ export default () => {
   return {
     stringRenderData: [
       { type: 'text', data: { start: [left,top], maxWidth: 80, rightMargin: 5, text: introText }},
-      { type: 'textrect', data: { start: [left + flooredLeftOffset,2], isYRelative: true, width: flooredLogoWidth, text: flooredLogo, props: { className: 'floored-purple' } }},
+      { type: 'textrect', data: { start: [left + flooredLeftOffset,2], isYRelative: true, width: flooredLogoWidth, text: flooredLogo, props: { className: 'floored-purple', 'aria-hidden': true } }},
       { type: 'text', data: { start: [left,4], isYRelative: true, maxWidth: 80, rightMargin: 5, text: transitionText }},
-      { type: 'textrect', data: { start: [left,3], isYRelative: true, width: cbreBuilderHatWidth, text: cbreBuilderHat, props: { className: 'cbre' } }},
+      { type: 'textrect', data: { start: [left,3], isYRelative: true, width: cbreBuilderHatWidth, text: cbreBuilderHat, props: { className: 'cbre', 'aria-hidden': true } }},
       { type: 'text', data: { start: [left,4], isYRelative: true, maxWidth: 80, rightMargin: 5, text: endingText }},
       { type: 'text', data: { start: [left + 1,2], isYRelative: true, maxWidth: 80, rightMargin: 5, text: 'here', props: { href: 'https://medium.com/cbrebuild/moving-to-couchdb-2-x-c2bc606970cb' } }},
       { type: 'text', data: { start: [left,1], isYRelative: true, maxWidth: 80, text: '\n ' }},

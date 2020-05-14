@@ -26,6 +26,8 @@ Resources\n\
 This site was built using React and is hosted on GitHub pages. A couple React + GitHub Pages resources I found helpful: \
 `;
 
+// TODO: Magdalena Henke helped me think through some of the accessibility concerns of this page and she’ll happily help you, too. (link my linkedin)
+
 const [left, top] = contentOffsets;
 
 export default () => {

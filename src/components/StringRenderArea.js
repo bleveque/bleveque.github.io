@@ -70,7 +70,7 @@ class StringRenderArea extends React.Component {
   interpolateToNewData() {
     let { str: finalContent, textMetadata: finalTextMetadata } = this.stringRenderer.generateRenderData(this.props.newData, []);
     let intermediateContent = this.stringRenderer.interpolateContent(this.content, finalContent, this.props.interpolationParameter);
-    return metadataParser(intermediateContent, finalTextMetadata);
+    return metadataParser(intermediateContent, finalTextMetadata, this.props.fontSize);
   }
 
   // if we're animating (i.e., props.newData is set), interpolate with old page data
@@ -84,7 +84,7 @@ class StringRenderArea extends React.Component {
       this.stringRenderer.setData(this.props.data);
       const {str, textMetadata} = this.stringRenderer.render();
       this.content = str;
-      elements = metadataParser(str, textMetadata);
+      elements = metadataParser(str, textMetadata, this.props.fontSize);
     }
 
     return (

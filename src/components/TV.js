@@ -43,7 +43,7 @@ class TV extends React.Component {
 
   getBlankScreenElements() {
     return [ // TODO maybe we could reuse resources from frame to frame
-      { type: 'textrect', data: { start: [0,0], width: this.getCharWidthTvUnits(), text: (new Array(this.getCharWidthTvUnits() * this.getCharHeightTvUnits() + 1)).join('#') }}
+      { type: 'textrect', data: { start: [0,0], width: this.getCharWidthTvUnits(), text: (new Array(this.getCharWidthTvUnits() * this.getCharHeightTvUnits() + 1)).join('#'), props: { 'aria-hidden': true } }}
     ];
   }
 
@@ -64,7 +64,7 @@ class TV extends React.Component {
 
     const asciiImageArray = this.imageConverter.convert(imageData, this.getCharWidthTvUnits());
     return [
-      { type: 'textrect', data: { start: [0,0], width: this.getCharWidthTvUnits(), text: asciiImageArray.join('') } }
+      { type: 'textrect', data: { start: [0,0], width: this.getCharWidthTvUnits(), text: asciiImageArray.join(''), props: { 'aria-hidden': true } } }
     ];
   }
 
@@ -106,6 +106,7 @@ class TV extends React.Component {
       <React.Fragment>
         <span onClick={() => this.setState({paused: !this.state.paused})}>
           <StringRenderArea
+            className="tv-screen"
             data={elements}
             fixedWidthPx={this.props.tvWidthPx}
             fixedHeightPx={this.props.tvHeightPx}

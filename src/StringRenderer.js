@@ -59,6 +59,10 @@ class StringRenderer {
     }
   }
 
+  scanForAccessibility(chars, chunkMetadata) {
+
+  }
+
   generateRenderData(inputData, textMetadata) {
     let chars = [];
     let relativeY = 0;
@@ -73,13 +77,14 @@ class StringRenderer {
       } else if (type === 'textrect') {
         relativeY = this.renderTextrect(chars, textMetadata, data, relativeY);
       } else if (type === 'line') {
-        this.renderLine(chars, data);
+        this.renderLine(chars, textMetadata, data);
       }
     }
 
-    textMetadata.sort((chunk1, chunk2) => chunk1.start - chunk2.start);
-
     this.fillEmptyEntriesAndAddLineBreaks(chars);
+    this.scanForAccessibility(chars, textMetadata);
+
+    textMetadata.sort((chunk1, chunk2) => chunk1.start - chunk2.start);
 
     return { str: chars.join(''), textMetadata };
   }
@@ -186,11 +191,12 @@ class StringRenderer {
     return maxY;
   }
 
-  renderLine(out, inputData) {
+  renderLine(out, chunkMetadata, inputData) {
     const { start, end } = inputData;
     if (start[0] === end[0] && start[1] === end[1]) { // point
       const outIdx = this.getIdxWithBreaks(start[0], start[1]);
       out[outIdx] = '\u00b7';
+      chunkMetadata.push({ start: outIdx, end: outIdx, inputData: { 'aria-hidden': true } });
     } else if (start[0] === end[0]) { // vertical
       const startHeight = this.parseHeight(out, start[1]);
       const endHeight = this.parseHeight(out, end[1]);
@@ -201,10 +207,13 @@ class StringRenderer {
     } else if (start[1] === end[1]) { // horizontal
       const startWidth = this.parseWidth(start[0]);
       const endWidth = this.parseWidth(end[0]);
+      const startIdx = this.getIdxWithBreaks(startWidth, this.parseHeight(out, start[1]));
+      const endIdx = this.getIdxWithBreaks(endWidth, this.parseHeight(out, start[1]));
       for (let i = startWidth; i <= endWidth; i++) {
         const outIdx = this.getIdxWithBreaks(i, this.parseHeight(out, start[1]));
         out[outIdx] = '\u2014';
       }
+      chunkMetadata.push({ start: startIdx, end: endIdx, inputData: { props: {'aria-hidden': true} } });
     }
   }
 

@@ -7,13 +7,13 @@ const navTextLeft = 3;
 const navTextTopBetween = 3;
 
 const getNavProps = (onClick, pageName) => {
-  return { className: 'clickable', onClick: () => onClick(pageName) };
+  return { className: 'clickable', 'aria-label': `Navigate to ${pageName} page`, onClick: () => onClick(pageName) };
 };
 
 export default (onNavClick) => {
   return [
     // top info
-    { type: 'text', data: { start: [navWidth + 2, 1], text: 'Ben(jamin) LeVeque' }},
+    { type: 'text', data: { start: [navWidth + 2, 1], text: 'Ben LeVeque' }},
     { type: 'text', data: { start: [-(email.length + 3), 3], text: email }},
     { type: 'text', data: { start: [-(linkedin.length + 3), 4], text: linkedin, props: { href: 'https://www.linkedin.com/in/benjamin-leveque-5a534361/' } }},
 
