@@ -218,10 +218,8 @@ Some projects I\'ve enjoyed:\n\
 \n\
 - spreading the word about our in-house WebGL graphics engine through documentation, tutorials, and presentations \n\
 \n\
-- contributing to a database system upgrade (CouchDB 1.x --> 2.x) and writing a blog post about it:\
+- contributing to a database system upgrade (CouchDB 1.x --> 2.x) and writing a [blog post](https://medium.com/cbrebuild/moving-to-couchdb-2-x-c2bc606970cb) about it.\
 ';
-
-const blogLink = 'https://medium.com/cbrebuild/moving-to-couchdb-2-x-c2bc606970cb'
 
 export default () => {
   return {
@@ -231,7 +229,6 @@ export default () => {
       { type: 'text', data: { start: [left,4], isYRelative: true, maxWidth: 80, rightMargin: 5, text: transitionText }},
       { type: 'textrect', data: { start: [left,3], isYRelative: true, width: cbreBuilderHatWidth, text: cbreBuilderHat, props: { className: 'cbre', 'aria-hidden': true } }},
       { type: 'text', data: { start: [left,4], isYRelative: true, maxWidth: 80, rightMargin: 5, text: endingText }},
-      { type: 'text', data: { start: [left + 1,2], isYRelative: true, maxWidth: 80, rightMargin: 5, text: 'here', props: { href: 'https://medium.com/cbrebuild/moving-to-couchdb-2-x-c2bc606970cb' } }},
       { type: 'text', data: { start: [left,1], isYRelative: true, maxWidth: 80, text: '\n ' }},
     ]
   };

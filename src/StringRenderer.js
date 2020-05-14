@@ -1,7 +1,26 @@
 // TODO: data format description
 
+const LINK_REGEX = /\[([^\]]*)\]\((http[^\]]*)\)/;
+const CHUNK_TYPES = {
+  NONE: 0,
+  REGULAR: 1,
+  LINK: 2
+};
+
 const interpolate = (a, b, t) => {
   return a * (1 - t) + b * t;
+};
+
+const parseLinks = text => {
+  const linkMetadata = [];
+  let match;
+
+  while (match = text.match(LINK_REGEX)) {
+    text = text.substring(0, match.index) + match[1] + text.substring(match.index + match[0].length);
+    linkMetadata.push({ start: match.index, end: match.index + match[1].length, href: match[2] });
+  }
+
+  return [text, linkMetadata];
 };
 
 
@@ -107,41 +126,62 @@ class StringRenderer {
   //  if it exceeds the page width. Note that it will not
   //  push other non-relative text down, so it may cause overlaps
   renderText(out, chunkMetadata, inputData, relativeY) {
-    let { text, start: [x, y], isYRelative } = inputData;
+    let { text: initText, start: [x, y], maxWidth, isYRelative, props } = inputData;
     x = this.parseWidth(x);
     y = this.parseHeight(out, y);
     if (isYRelative) y += relativeY;
     if (x < 0) x += this.width;
 
+    let [text, linkMetadata] = parseLinks(initText);
+
     const initX = x;
     let chunkStart = Infinity;
     let chunkEnd = -Infinity;
     let maxY = 0;
+    let linkIdx = 0;
+    let createNewChunk = CHUNK_TYPES.NONE;
 
     for (let i = 0; i < text.length; i++, x++) {
+      if (createNewChunk !== CHUNK_TYPES.NONE) {
+        if (isFinite(chunkEnd) && isFinite(chunkStart) && chunkMetadata) {
+          let chunkProps = props ? { ...props } : null;
+          if (createNewChunk === CHUNK_TYPES.LINK) {
+            chunkProps = chunkProps || {}
+            chunkProps.href = linkMetadata[linkIdx].href;
+            linkIdx++;
+          }
+          if (chunkProps) chunkMetadata.push({ start: chunkStart, end: chunkEnd, props: chunkProps });
+        }
+        chunkStart = Infinity;
+        createNewChunk = CHUNK_TYPES.NONE;
+      }
+
       if (text[i] === '\n') {
         x = initX - 1;
         y++;
+        createNewChunk = CHUNK_TYPES.REGULAR;
         continue;
       }
 
       if (x < 0) continue;
-      if (x >= this.width && !inputData.maxWidth) continue;
+      if (x >= this.width && !maxWidth) continue;
 
-      if (inputData.maxWidth) {
+      if (maxWidth) {
         const rightMargin = inputData.rightMargin || 0;
-        if (x >= this.width - rightMargin  || x - initX + 1 > inputData.maxWidth) {
+        if (x >= this.width - rightMargin  || x - initX + 1 > maxWidth) {
           x = initX;
           y++;
+          createNewChunk = CHUNK_TYPES.REGULAR;
           if (text[i] === ' ') i++;
         } else if (text[i] === ' ') { // break lines on spaces
           const nextNewlineIdx = text.indexOf('\n', i + 1);
           const nextSpaceIdx = text.indexOf(' ', i + 1); // NOTE: current implementation requires a space at the end of wrapped text in order to wrap the last word correctly
           const nextBreakIdx = (nextNewlineIdx === -1 || nextSpaceIdx === -1) ? Math.max(nextSpaceIdx, nextNewlineIdx) : Math.min(nextSpaceIdx, nextNewlineIdx);
           const nextBreakX = (nextBreakIdx - i) + x; // (index within text of next break - current index in text) + current x == x of next break
-          if (nextBreakIdx > 0 && (nextBreakX > this.width - rightMargin || nextBreakX - initX + 1 > inputData.maxWidth)) {
+          if (nextBreakIdx > 0 && (nextBreakX > this.width - rightMargin || nextBreakX - initX + 1 > maxWidth)) {
             x = initX;
             y++;
+            createNewChunk = CHUNK_TYPES.REGULAR;
             i++;
           }
         }
@@ -152,8 +192,22 @@ class StringRenderer {
       chunkStart = Math.min(chunkStart, outIdx);
       chunkEnd = Math.max(chunkEnd, outIdx);
       maxY = Math.max(maxY, y);
+
+      // if a link starts on the next character, cut off the current chunk
+      if (linkMetadata && linkIdx < linkMetadata.length && i + 1 === linkMetadata[linkIdx].start) createNewChunk = CHUNK_TYPES.REGULAR; // NOTE: assumes there aren't two links directly in a row
+
+      // if a link ends at the current character, cut off the current chunk
+      if (linkMetadata && linkIdx < linkMetadata.length && i + 1 === linkMetadata[linkIdx].end) createNewChunk = CHUNK_TYPES.LINK;
     }
-    if (chunkMetadata && inputData.props) chunkMetadata.push({ start: chunkStart, end: chunkEnd, inputData });
+
+    let chunkProps = props ? { ...props } : null;
+    if (createNewChunk === CHUNK_TYPES.LINK) {
+      chunkProps = chunkProps || {};
+      chunkProps.href = linkMetadata[linkIdx].href;
+      linkIdx++;
+    }
+    if (isFinite(chunkEnd) && isFinite(chunkStart) && chunkMetadata && chunkProps) chunkMetadata.push({ start: chunkStart, end: chunkEnd, props: chunkProps });
+
     return maxY;
   }
 
@@ -179,14 +233,14 @@ class StringRenderer {
 
       if (outIdx > chunkEnd + 1) { // if we've wrapped lines, create new metadata
         if (isFinite(chunkEnd) && chunkMetadata && inputData.props) {
-          chunkMetadata.push({ start: chunkStart, end: chunkEnd, inputData });
+          chunkMetadata.push({ start: chunkStart, end: chunkEnd, props: inputData.props });
         }
         chunkStart = outIdx;
       }
       chunkEnd = outIdx;
     }
 
-    if (isFinite(chunkEnd) && chunkMetadata && inputData.props) chunkMetadata.push({ start: chunkStart, end: chunkEnd, inputData });
+    if (isFinite(chunkEnd) && chunkMetadata && inputData.props) chunkMetadata.push({ start: chunkStart, end: chunkEnd, props: inputData.props });
 
     return maxY;
   }
@@ -196,7 +250,7 @@ class StringRenderer {
     if (start[0] === end[0] && start[1] === end[1]) { // point
       const outIdx = this.getIdxWithBreaks(start[0], start[1]);
       out[outIdx] = '\u00b7';
-      chunkMetadata.push({ start: outIdx, end: outIdx, inputData: { 'aria-hidden': true } });
+      chunkMetadata.push({ start: outIdx, end: outIdx, props: { 'aria-hidden': true } });
     } else if (start[0] === end[0]) { // vertical
       const startHeight = this.parseHeight(out, start[1]);
       const endHeight = this.parseHeight(out, end[1]);
@@ -213,7 +267,7 @@ class StringRenderer {
         const outIdx = this.getIdxWithBreaks(i, this.parseHeight(out, start[1]));
         out[outIdx] = '\u2014';
       }
-      chunkMetadata.push({ start: startIdx, end: endIdx, inputData: { props: {'aria-hidden': true} } });
+      chunkMetadata.push({ start: startIdx, end: endIdx, props: {'aria-hidden': true} });
     }
   }
 

@@ -12,16 +12,16 @@ export default (str, textMetadata, fontSize) => {
 
   let lastEnd = -1; // the last index we've added to elements already
   for (let i = 0; i < textMetadata.length; i++) {
-    let { start, end, inputData } = textMetadata[i];
+    let { start, end, props } = textMetadata[i];
     start = Math.max(start, lastEnd + 1);
     if (start > lastEnd + 1) elements.push(<span key={`span-prev-${i}`}>{str.substring(lastEnd + 1, start)}</span>);
 
-    if (inputData && inputData.props && inputData.props.href) {
-      elements.push(<a key={`a-${i}`} {...inputData.props}>{str.substring(start, end + 1)}</a>);
-    } else if (inputData && inputData.props && inputData.props.onClick) {
-      elements.push(<AriaButton key={`ariabutton-${i}`} style={{fontSize}} {...inputData.props}>{str.substring(start, end + 1)}</AriaButton>);
-    } else if (inputData && inputData.props) {
-      elements.push(<span key={`span-${i}`} {...inputData.props}>{str.substring(start, end + 1)}</span>);
+    if (props && props.href) {
+      elements.push(<a key={`a-${i}`} {...props}>{str.substring(start, end + 1)}</a>);
+    } else if (props && props.onClick) {
+      elements.push(<AriaButton key={`ariabutton-${i}`} style={{fontSize}} {...props}>{str.substring(start, end + 1)}</AriaButton>);
+    } else if (props) {
+      elements.push(<span key={`span-${i}`} {...props}>{str.substring(start, end + 1)}</span>);
     } else {
       elements.push(<span key={`span-${i}`}>{str.substring(start, end + 1)}</span>);
     }
