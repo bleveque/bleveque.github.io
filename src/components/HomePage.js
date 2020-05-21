@@ -11,7 +11,7 @@ import animationHelper from '../animationHelper';
 // - keep track of nav state
 // - gather data to pass to StringRenderArea
 
-const SHOULD_ANIMATE = false;
+const SHOULD_ANIMATE = true;
 const FONT_SIZE = 14;
 
 const HomePage = () => {

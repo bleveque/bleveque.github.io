@@ -17,11 +17,75 @@ const parseLinks = text => {
 
   while (match = text.match(LINK_REGEX)) {
     text = text.substring(0, match.index) + match[1] + text.substring(match.index + match[0].length);
-    linkMetadata.push({ start: match.index, end: match.index + match[1].length, href: match[2] });
+    linkMetadata.push({ start: match.index, end: match.index + match[1].length - 1, href: match[2] }); // end is the last index included in the link
   }
 
   return [text, linkMetadata];
 };
+
+const shouldWrap = (text, textIdx, x, initX, rendererWidth, maxWidth, rightMargin = 0) => {
+  if (text[textIdx] === '\n') return true;
+  if (maxWidth) {
+    // if x exceeds maxWidth or the right margin, wrap
+    if (x >= rendererWidth - rightMargin || x - initX + 1 > maxWidth) {
+      return true;
+    }
+
+    // if maxWidth is defined, we should break lines on spaces
+    if (text[textIdx] === ' ') {
+      let nextBreakIdx = text.substring(textIdx + 1).search(/[\n ]/); // NOTE: current implementation requires a space at the end of wrapped text in order to wrap the last word correctly
+
+      if (nextBreakIdx >= 0) {
+        nextBreakIdx += textIdx + 1;
+        let nextBreakX = (nextBreakIdx - textIdx) + x; // (index within text of next break - current index in text) + current x == x of next break
+
+        if (nextBreakX >= rendererWidth - rightMargin || nextBreakX - initX + 1 > maxWidth) {
+          return true;
+        }
+      }
+    }
+  }
+  return false;
+};
+
+const pushChunk = (chunkMetadata, textIdx, linkMetadata, chunkStart, chunkEnd, chunkProps) => {
+  if (!isFinite(chunkStart) || !isFinite(chunkEnd) || !chunkMetadata) return Infinity;
+
+  let props = chunkProps ? { ...chunkProps } : null;
+
+  if (linkMetadata) {
+    for (let i = 0; i < linkMetadata.length; i++) {
+      if (linkMetadata[i].start <= textIdx && textIdx <= linkMetadata[i].end) {
+        props = props || {};
+        props.href = linkMetadata[i].href;
+        break;
+      }
+    }
+  }
+
+  if (props) chunkMetadata.push({ start: chunkStart, end: chunkEnd, props });
+  return Infinity;
+};
+
+const atStartOfLink = (textIdx, linkMetadata) => {
+  for (let i = 0; i < linkMetadata.length; i++) {
+    if (linkMetadata[i].start === textIdx) return true;
+  }
+  return false;
+};
+
+const atEndOfLink = (textIdx, linkMetadata) => {
+  for (let i = 0; i < linkMetadata.length; i++) {
+    if (linkMetadata[i].end === textIdx) return true;
+  }
+  return false;
+};
+
+
+
+
+
+
 
 
 class StringRenderer {
@@ -73,7 +137,7 @@ class StringRenderer {
 
   fillEmptyEntriesAndAddLineBreaks(chars) {
     for (let i = 0, len = chars.length; i < len; i++) {
-      chars[i] = chars[i] || '\u0020';
+      chars[i] = chars[i] || ' ';
       if (i % this.breakWidth === this.breakWidth - 1) chars[i] = '\n';
     }
   }
@@ -122,91 +186,61 @@ class StringRenderer {
     return y * this.breakWidth + x;
   }
 
-  // if inputData.maxWidth is specified, text will wrap
-  //  if it exceeds the page width. Note that it will not
-  //  push other non-relative text down, so it may cause overlaps
+  // approach:
+  //  for each index in text:
+  //    decide if we should go to the next line -- if so, update x and y, push chunk, and continue
+  //      if we hit a newline character
+  //      if we exceeded maxWidth, taking rightMargin into account
+  //    if x is at beginning of line and character is whitespace, continue without incrementing x
+  //    if i is at the start of a link, push the last chunk
+  //    then we can write character into out
+  //    if x is at the end of a link, push link chunk
+
   renderText(out, chunkMetadata, inputData, relativeY) {
-    let { text: initText, start: [x, y], maxWidth, isYRelative, props } = inputData;
+    let { text: initText, start: [x, y], maxWidth, rightMargin, isYRelative, props } = inputData;
     x = this.parseWidth(x);
     y = this.parseHeight(out, y);
     if (isYRelative) y += relativeY;
     if (x < 0) x += this.width;
+    const initX = x;
 
     let [text, linkMetadata] = parseLinks(initText);
 
-    const initX = x;
     let chunkStart = Infinity;
     let chunkEnd = -Infinity;
-    let maxY = 0;
-    let linkIdx = 0;
-    let createNewChunk = CHUNK_TYPES.NONE;
+    let maxY = y;
 
-    for (let i = 0; i < text.length; i++, x++) {
-      if (createNewChunk !== CHUNK_TYPES.NONE) {
-        if (isFinite(chunkEnd) && isFinite(chunkStart) && chunkMetadata) {
-          let chunkProps = props ? { ...props } : null;
-          if (createNewChunk === CHUNK_TYPES.LINK) {
-            chunkProps = chunkProps || {}
-            chunkProps.href = linkMetadata[linkIdx].href;
-            linkIdx++;
-          }
-          if (chunkProps) chunkMetadata.push({ start: chunkStart, end: chunkEnd, props: chunkProps });
-        }
-        chunkStart = Infinity;
-        createNewChunk = CHUNK_TYPES.NONE;
-      }
-
-      if (text[i] === '\n') {
-        x = initX - 1;
-        y++;
-        createNewChunk = CHUNK_TYPES.REGULAR;
+    for (let i = 0; i < text.length; i++) {
+      // x outside of the page; don't write anything to out, just increment x and continue
+      if (x < 0 || (x >= this.width && !maxWidth)) {
+        x++;
         continue;
       }
 
-      if (x < 0) continue;
-      if (x >= this.width && !maxWidth) continue;
-
-      if (maxWidth) {
-        const rightMargin = inputData.rightMargin || 0;
-        if (x >= this.width - rightMargin  || x - initX + 1 > maxWidth) {
-          x = initX;
-          y++;
-          createNewChunk = CHUNK_TYPES.REGULAR;
-          if (text[i] === ' ') i++;
-        } else if (text[i] === ' ') { // break lines on spaces
-          const nextNewlineIdx = text.indexOf('\n', i + 1);
-          const nextSpaceIdx = text.indexOf(' ', i + 1); // NOTE: current implementation requires a space at the end of wrapped text in order to wrap the last word correctly
-          const nextBreakIdx = (nextNewlineIdx === -1 || nextSpaceIdx === -1) ? Math.max(nextSpaceIdx, nextNewlineIdx) : Math.min(nextSpaceIdx, nextNewlineIdx);
-          const nextBreakX = (nextBreakIdx - i) + x; // (index within text of next break - current index in text) + current x == x of next break
-          if (nextBreakIdx > 0 && (nextBreakX > this.width - rightMargin || nextBreakX - initX + 1 > maxWidth)) {
-            x = initX;
-            y++;
-            createNewChunk = CHUNK_TYPES.REGULAR;
-            i++;
-          }
-        }
+      if (shouldWrap(text, i, x, initX, this.width, maxWidth, rightMargin)) {
+        x = initX;
+        y++;
+        chunkStart = pushChunk(chunkMetadata, i, linkMetadata, chunkStart, chunkEnd, props); // NOTE: not ideal for a11y to break up links across lines
+        continue;
       }
-      const outIdx = this.getIdxWithBreaks(x, y);
 
+      if (x === initX && text[i] === ' ') continue;
+
+      if (atStartOfLink(i, linkMetadata)) chunkStart = pushChunk(chunkMetadata, -1, null, chunkStart, chunkEnd, props);
+
+      const outIdx = this.getIdxWithBreaks(x, y);
       out[outIdx] = text[i];
       chunkStart = Math.min(chunkStart, outIdx);
       chunkEnd = Math.max(chunkEnd, outIdx);
       maxY = Math.max(maxY, y);
+      x++;
 
-      // if a link starts on the next character, cut off the current chunk
-      if (linkMetadata && linkIdx < linkMetadata.length && i + 1 === linkMetadata[linkIdx].start) createNewChunk = CHUNK_TYPES.REGULAR; // NOTE: assumes there aren't two links directly in a row
-
-      // if a link ends at the current character, cut off the current chunk
-      if (linkMetadata && linkIdx < linkMetadata.length && i + 1 === linkMetadata[linkIdx].end) createNewChunk = CHUNK_TYPES.LINK;
+      if (atEndOfLink(i, linkMetadata)) chunkStart = pushChunk(chunkMetadata, i, linkMetadata, chunkStart, chunkEnd, props);
     }
 
-    let chunkProps = props ? { ...props } : null;
-    if (createNewChunk === CHUNK_TYPES.LINK) {
-      chunkProps = chunkProps || {};
-      chunkProps.href = linkMetadata[linkIdx].href;
-      linkIdx++;
-    }
-    if (isFinite(chunkEnd) && isFinite(chunkStart) && chunkMetadata && chunkProps) chunkMetadata.push({ start: chunkStart, end: chunkEnd, props: chunkProps });
+    pushChunk(chunkMetadata, -1, null, chunkStart, chunkEnd, props);
+
+    if (text[text.length - 1] === '\n') out[this.getIdxWithBreaks(x, y - 1)] = '\n';
 
     return maxY;
   }
