@@ -17,9 +17,11 @@ I think ASCII/unicode art looks neat, and it was an interesting experiment!\n\
 I also think train station-style flip boards are fun, so I wanted to try \
 to incorporate that type of animation into the page transitions here.\n\
 \n\
-However, since the page is essentially a long string interrupted by some inline elements \
-in left-right top-down order, it is horribly inaccessible to screen readers. I would love \
-to fix this in a future version.\n\
+However, this approach to creating a site doesn't lend itself well to accessibility. \
+[Magdalena Henke](https://www.linkedin.com/in/magdalena-henke/) has helped me think through \
+some of the accessibility concerns of this page (I've only started to incorporate her feedback!); \
+if you would like help improving or auditing the accessibility of your page, she will happily help \
+you, too!\n\
 \n\n\n\n\
 Resources\n\
 ---------------------\n\

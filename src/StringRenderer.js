@@ -1,6 +1,6 @@
 // TODO: data format description
 
-const LINK_REGEX = /\[([^\]]*)\]\((http[^\]]*)\)/;
+const LINK_REGEX = /\[([^\]]*)\]\((http[^\]\s]*)\)/;
 const CHUNK_TYPES = {
   NONE: 0,
   REGULAR: 1,
