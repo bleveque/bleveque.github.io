@@ -65,10 +65,23 @@ class StringRenderArea extends React.Component {
     this.forceUpdate();
   }
 
+  evaluateData(data) {
+
+    const out = [];
+    for (let i = 0; i < data.length; i++) {
+      if (typeof data[i] !== 'function') {
+        out.push(data[i]);
+      } else {
+        out.push(...data[i](this.windowCharWidth, this.windowCharHeight));
+      }
+    }
+    return out;
+  }
+
   // if animation data is being sent into the component (via props.newData and props.interpolationParameter),
   // perform interpolation and return corresponding elements
   interpolateToNewData() {
-    let { str: finalContent, textMetadata: finalTextMetadata } = this.stringRenderer.generateRenderData(this.props.newData, []);
+    let { str: finalContent, textMetadata: finalTextMetadata } = this.stringRenderer.generateRenderData(this.evaluateData(this.props.newData), []);
     let intermediateContent = this.stringRenderer.interpolateContent(this.content, finalContent, this.props.interpolationParameter);
     return metadataParser(intermediateContent, finalTextMetadata, this.props.fontSize);
   }
@@ -81,7 +94,8 @@ class StringRenderArea extends React.Component {
     if (this.props.newData) {
       elements = this.interpolateToNewData();
     } else if (this.singleCharWidth > 0) {
-      this.stringRenderer.setData(this.props.data);
+      const data = this.evaluateData(this.props.data);
+      this.stringRenderer.setData(data);
       const {str, textMetadata} = this.stringRenderer.render();
       this.content = str;
       elements = metadataParser(str, textMetadata, this.props.fontSize);

@@ -5,10 +5,10 @@ const spaceOrEnter = evt => {
   return evt.which === 32 || evt.which === 13;
 }
 
-const AriaButton = ({ children, onClick, ...other }) => {
+const AriaButton = ({ children, onClick, className, ...other }) => {
   return (
     <span
-      className="clickable"
+      className={`${className} clickable`}
       role="button"
       tabIndex="0"
       onClick={onClick}
@@ -21,3 +21,4 @@ const AriaButton = ({ children, onClick, ...other }) => {
 };
 
 export default AriaButton;
+

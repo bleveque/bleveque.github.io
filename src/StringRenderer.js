@@ -48,10 +48,15 @@ const shouldWrap = (text, textIdx, x, initX, rendererWidth, maxWidth, rightMargi
   return false;
 };
 
-const pushChunk = (chunkMetadata, textIdx, linkMetadata, chunkStart, chunkEnd, chunkProps) => {
+const pushChunk = (chunkMetadata, textIdx, linkMetadata, chunkStart, chunkEnd, chunkProps, notTabbable) => {
   if (!isFinite(chunkStart) || !isFinite(chunkEnd) || !chunkMetadata) return Infinity;
 
   let props = chunkProps ? { ...chunkProps } : null;
+
+  if (notTabbable) {
+    if (!props) props = {};
+    props.tabIndex = '-1';
+  }
 
   if (linkMetadata) {
     for (let i = 0; i < linkMetadata.length; i++) {
@@ -247,7 +252,7 @@ class StringRenderer {
 
   // note: inputData reference may be shared by multiple chunkMetadata entries
   renderTextrect(out, chunkMetadata, inputData, relativeY) {
-    let { text, start: [x, y], width, isYRelative } = inputData;
+    let { text, start: [x, y], width, isYRelative, props } = inputData;
     x = this.parseWidth(x);
     y = this.parseHeight(out, y);
     if (isYRelative) y += relativeY;
@@ -256,6 +261,7 @@ class StringRenderer {
     let chunkStart = -Infinity;
     let chunkEnd = -Infinity;
     let maxY = 0;
+    let tabbableChunk = true;
 
     for (let i = 0; i < text.length; i++) {
       if (x + (i % width) < 0 || x + (i % width) >= this.width) continue;
@@ -266,15 +272,14 @@ class StringRenderer {
       maxY = Math.max(maxY, y + dy);
 
       if (outIdx > chunkEnd + 1) { // if we've wrapped lines, create new metadata
-        if (isFinite(chunkEnd) && chunkMetadata && inputData.props) {
-          chunkMetadata.push({ start: chunkStart, end: chunkEnd, props: inputData.props });
-        }
+        pushChunk(chunkMetadata, -1, null, chunkStart, chunkEnd, props, !tabbableChunk);
+        if (isFinite(chunkStart) && isFinite(chunkEnd) && props && props.onClick) tabbableChunk = false;
         chunkStart = outIdx;
       }
       chunkEnd = outIdx;
     }
 
-    if (isFinite(chunkEnd) && chunkMetadata && inputData.props) chunkMetadata.push({ start: chunkStart, end: chunkEnd, props: inputData.props });
+    pushChunk(chunkMetadata, -1, null, chunkStart, chunkEnd, props, !tabbableChunk);
 
     return maxY;
   }
