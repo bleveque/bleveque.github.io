@@ -1,6 +1,10 @@
 import { contentOffsets } from '../constants';
 const [left, top] = contentOffsets;
 
+// const imagenText ='\
+// In 2020, I joined Imagen, a healthcare technology company.\
+// ';
+
 const introText = '\
 In 2014, I joined Floored, a real estate tech startup specializing in \
 space visualization and optimization problems, as a full-stack engineer. \
@@ -201,12 +205,12 @@ const cbreBuilderHatWidth = 35;
 const flooredLeftOffset = Math.floor((cbreBuilderHatWidth - flooredLogoWidth) / 2); // heh
 
 const endingText = '\
-Working on the Floored / CBRE Build team has been an incredible experience.\n\
+Working on the Floored / CBRE Build team was an incredible experience.\n\
 \n\
 \n\
-Some projects I\'ve enjoyed:\n\
+Some projects I enjoyed:\n\
 \n\
-- building 3D scene-editing tools for our amazingly talented 3D art team\n\
+- building 3D scene-editing tools for the amazingly talented 3D art team\n\
 \n\
 - helping build a floorplan optimization product from the first commits through the MVP (and beyond)\n\
 \n\
@@ -218,7 +222,7 @@ Some projects I\'ve enjoyed:\n\
 \n\
 - spreading the word about our in-house WebGL graphics engine through documentation, tutorials, and presentations \n\
 \n\
-- contributing to a database system upgrade (CouchDB 1.x --> 2.x) and writing a [blog post](https://medium.com/cbrebuild/moving-to-couchdb-2-x-c2bc606970cb) about it. \
+- contributing to a database system upgrade (CouchDB 1.x --> 2.x) and writing a [blog post](https://medium.com/cbrebuild/moving-to-couchdb-2-x-c2bc606970cb) about it \
 ';
 
 export default () => {

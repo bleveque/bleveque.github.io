@@ -6,13 +6,14 @@ const [left, top] = contentOffsets;
 export default () => {
   return {
     stringRenderData: [ (windowCharWidth, windowCharHeight) => {
+      const showVoteBanner = false;
       const canFitHorizRegister = windowCharWidth > 105 + left;
-      const nameTop = canFitHorizRegister ? top + 26 : top + 46;
+      const nameTop = showVoteBanner ? (canFitHorizRegister ? top + 26 : top + 46) : top;
       const webringTop = nameTop + 34;
       const voteText = canFitHorizRegister ? REGISTER : REGISTER_VERT;
       return [
         // vote banner
-        { type: 'textrect', data: { start: [left,top], width: canFitHorizRegister ? 105 : 27, text: voteText, props: { className: 'color-cycle', 'aria-label': 'Please Vote! Links to vote.org', onClick: () => window.location = 'https://www.vote.org/' }}},
+        showVoteBanner && { type: 'textrect', data: { start: [left,top], width: canFitHorizRegister ? 105 : 27, text: voteText, props: { className: 'color-cycle', 'aria-label': 'Please Vote! Links to vote.org', onClick: () => window.location = 'https://www.vote.org/' }}},
         //
         { type: 'text', data: { start: [left, nameTop], text: "I'm Ben:" }},
         { type: 'textrect', data: { start: [left,nameTop + 2], width: 49, text: DANCING[Math.floor(Math.random() * 2)], props: { 'aria-hidden': true } }},

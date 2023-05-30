@@ -4,6 +4,9 @@ const [left, top] = contentOffsets;
 const projects = '\
 ';
 
+// to do:
+// - 
+
 export default () => {
   return {
     stringRenderData: [

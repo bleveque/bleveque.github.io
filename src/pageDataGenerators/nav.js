@@ -25,9 +25,9 @@ export default (onNavClick) => {
 
     // nav
     { type: 'text', data: { start: ['5%', topBarHeight - 1], text: 'Home', props: getNavProps(onNavClick, 'home') }},
-    { type: 'text', data: { start: ['30%', topBarHeight - 1], text: 'Work', props: getNavProps(onNavClick, 'work') }},
-    { type: 'text', data: { start: ['55%', topBarHeight - 1], text: 'About', props: getNavProps(onNavClick, 'about') }},
-    !isTouchScreen && { type: 'text', data: { start: ['80%', topBarHeight - 1], text: 'TV', props: getNavProps(onNavClick, 'tv') }},
+    // { type: 'text', data: { start: ['30%', topBarHeight - 1], text: 'Work', props: getNavProps(onNavClick, 'work') }},
+    { type: 'text', data: { start: ['30%', topBarHeight - 1], text: 'About', props: getNavProps(onNavClick, 'about') }},
+    !isTouchScreen && { type: 'text', data: { start: ['55%', topBarHeight - 1], text: 'TV', props: getNavProps(onNavClick, 'tv') }},
 
     // lines
     { type: 'line', data: { start: [navWidth, topBarHeight - 2], end: ['100%', topBarHeight - 2] }},
