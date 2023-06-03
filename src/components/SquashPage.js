@@ -9,9 +9,9 @@ const SquashPage = () => {
 
       <h2>Table of Contents</h2>
       <ol>
-        <li><a href="#planting">Planting (5/29/23)</a></li>
-        <li><a href="#disclaimer">Disclaimer</a></li>
-        <li><a href="#context">Context</a></li>
+        <li>Planting (5/29/23)</li>
+        <li>Disclaimer</li>
+        <li>Context</li>
       </ol>
 
       <h2 id="planting">Planting (5/29/23)</h2>
