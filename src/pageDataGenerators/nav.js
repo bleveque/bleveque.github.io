@@ -28,6 +28,7 @@ export default (onNavClick) => {
     // { type: 'text', data: { start: ['30%', topBarHeight - 1], text: 'Work', props: getNavProps(onNavClick, 'work') }},
     { type: 'text', data: { start: ['30%', topBarHeight - 1], text: 'About', props: getNavProps(onNavClick, 'about') }},
     !isTouchScreen && { type: 'text', data: { start: ['55%', topBarHeight - 1], text: 'TV', props: getNavProps(onNavClick, 'tv') }},
+    { type: 'text', data: { start: [ !isTouchScreen ? '80%' : '55%', topBarHeight - 1], text: 'Squash ->', props: { href: '/#/squash' } }},
 
     // lines
     { type: 'line', data: { start: [navWidth, topBarHeight - 2], end: ['100%', topBarHeight - 2] }},

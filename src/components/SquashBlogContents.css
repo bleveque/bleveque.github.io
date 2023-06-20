@@ -1,0 +1,17 @@
+.image-container {
+    margin: 10px;
+}
+
+.image-container img {
+    padding: 5px;
+}
+
+.img-medium {
+    width: 400px;
+    max-width: 90%;
+}
+
+.img-large {
+    width: 810px;
+    max-width: 90%;
+}
