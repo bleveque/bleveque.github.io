@@ -1,11 +1,11 @@
 import React from 'react';
 
 export default {
-    title: "First Sprouts (6/13/23 - 6/18/23)",
+    title: "First Sprouts",
+    date: "6/13/23 - 6/18/23",
     path: "first-sprouts",
     contents: (
       <div>
-        <h2 id="first-sprouts">First Sprouts (6/13/23 - 6/18/23)</h2>
         <p>
           It's been a couple weeks since my last post. Time flies.
         </p>

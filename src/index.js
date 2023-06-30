@@ -18,7 +18,7 @@ function App() {
         return (
           <Route path={`/squash/${bc.path}`}>
             <BlogPage homeLink="/" prevLink={prevLink} nextLink={nextLink} tocLink="/#/squash">
-              <SquashBlogContents>{bc.contents}</SquashBlogContents>
+              <SquashBlogContents contentData={bc} />
             </BlogPage>
           </Route>
         );

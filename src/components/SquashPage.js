@@ -12,7 +12,7 @@ const SquashPage = () => {
 
       <h2>Table of Contents</h2>
       <ol>
-        { blogContents.map(bc => (<li><a href={`/#/squash/${bc.path}`}>{bc.title}</a></li>)) }
+        { blogContents.map(bc => (<li><a href={`/#/squash/${bc.path}`}>{bc.title} ({bc.date})</a></li>)) }
       </ol>
 
       <hr />

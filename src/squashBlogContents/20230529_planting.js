@@ -1,11 +1,11 @@
 import React from 'react';
 
 export default {
-  title: "Planting (5/29/23)",
+  title: "Planting",
+  date: "5/29/23",
   path: "planting",
   contents: (
     <div>
-      <h2 id="planting">Planting (5/29/23)</h2>
       <p>
         When growing squash, the first thing you should do is to bury several squash seeds in some dirt.
         This is called "planting", "sowing", or "squashing". A prerequisite step, of course, is to find
