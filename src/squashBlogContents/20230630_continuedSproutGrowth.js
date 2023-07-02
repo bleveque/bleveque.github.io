@@ -12,20 +12,20 @@ export default {
         </p>
         <p>
           Zucchini:
-          <div class="image-container">
-            <img class="img-medium" src="/squash/zucchini_more_sprouts.jpg" alt="Image of zucchini sprouts"></img>
+          <div className="image-container">
+            <img className="img-medium" src="/squash/zucchini_more_sprouts.jpg" alt="Image of zucchini sprouts"></img>
           </div>
         </p>
         <p>
           Jalapeños:
-          <div class="image-container">
-            <img class="img-medium" src="/squash/jalapeno_sprouts.jpg" alt="Image of jalapeño sprouts"></img>
+          <div className="image-container">
+            <img className="img-medium" src="/squash/jalapeno_sprouts.jpg" alt="Image of jalapeño sprouts"></img>
           </div>
         </p>
         <p>
           Butternut squash:
-          <div class="image-container">
-            <img class="img-medium" src="/squash/butternut_sprouts.jpg" alt="Image of butternut sprouts"></img>
+          <div className="image-container">
+            <img className="img-medium" src="/squash/butternut_sprouts.jpg" alt="Image of butternut sprouts"></img>
           </div>
         </p>
         <p>

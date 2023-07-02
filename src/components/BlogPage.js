@@ -1,5 +1,6 @@
-import React, { Children } from 'react';
+import React from 'react';
 import './BlogPage.css';
+import SquashBackground from './SquashBackground';
 
 const BlogNav = ({ prevLink, nextLink, tocLink, homeLink }) => {
   return (
@@ -14,8 +15,10 @@ const BlogNav = ({ prevLink, nextLink, tocLink, homeLink }) => {
 
 const BlogPage = (props) => {
   const { prevLink, nextLink, tocLink, homeLink } = props;
+
   return (
     <div className="root">
+      <SquashBackground />
       <BlogNav {...props} />
       <div>{props.children}</div>
       <BlogNav {...props} />

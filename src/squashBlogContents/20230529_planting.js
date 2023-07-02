@@ -12,9 +12,9 @@ export default {
         dirt; I found some in two neglected raised beds in the yard, which you can just make out in the
         images below:
 
-        <div class="image-container">
-          <img class="img-medium" src="/squash/raised_beds_pre_prep_2.jpeg" alt="Image of overgrown raised planting bed 1"></img>
-          <img class="img-medium" src="/squash/raised_beds_pre_prep_3.jpeg" alt="Image of overgrown raised planting bed 2"></img>
+        <div className="image-container">
+          <img className="img-medium" src="/squash/raised_beds_pre_prep_2.jpeg" alt="Image of overgrown raised planting bed 1"></img>
+          <img className="img-medium" src="/squash/raised_beds_pre_prep_3.jpeg" alt="Image of overgrown raised planting bed 2"></img>
         </div>
 
         As you can see, plants have successfully grown here before, so I knew I was on the right track.
@@ -23,16 +23,16 @@ export default {
         I set about clearing the beds of weeds and old leaves. This left only a layer of old dirt and some
         slugs, which seemed keen to wander out on their own:
 
-        <div class="image-container">
-          <img class="img-medium" src="/squash/slug_2.jpeg" alt="Image of slug leaving raised planting bed 1"></img>
-          <img class="img-medium" src="/squash/slug_4.jpeg" alt="Image of slug leaving raised planting bed 2"></img>
+        <div className="image-container">
+          <img className="img-medium" src="/squash/slug_2.jpeg" alt="Image of slug leaving raised planting bed 1"></img>
+          <img className="img-medium" src="/squash/slug_4.jpeg" alt="Image of slug leaving raised planting bed 2"></img>
         </div>
       </p>
       <p>
         When all was said and done:
 
-        <div class="image-container">
-          <img class="img-large" src="/squash/raised_beds_post_prep_1.jpeg" alt="Image of cleared raised beds"></img>
+        <div className="image-container">
+          <img className="img-large" src="/squash/raised_beds_post_prep_1.jpeg" alt="Image of cleared raised beds"></img>
         </div>
 
         A casual observer may find nothing remarkable in the image above, but close inspection reveals two different colors of dirt.
@@ -44,10 +44,10 @@ export default {
         After clearing the boxes, it was time to put down a layer of fresh soil. I always use Organic All Natural Garden Soil for
         this purpose:
 
-        <div class="image-container">
-          <img class="img-large" src="/squash/soil_bags.jpeg" alt="Image of soil bags"></img>
+        <div className="image-container">
+          <img className="img-large" src="/squash/soil_bags.jpeg" alt="Image of soil bags"></img>
           <br />
-          <img class="img-large" src="/squash/raised_beds_post_soil_2.jpeg" alt="Image of beds and pot with fresh soil"></img>
+          <img className="img-large" src="/squash/raised_beds_post_soil_2.jpeg" alt="Image of beds and pot with fresh soil"></img>
         </div>
 
         These beds are looking good! You'll notice, too, a small pot in frame. This also got a fresh layer of soil, but what will be planted

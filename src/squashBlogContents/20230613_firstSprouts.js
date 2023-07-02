@@ -12,15 +12,15 @@ export default {
         <p>
           Since planting is already done, I won't bury the <i>seed</i> in this post -- we now have sprouts! Two of them:
 
-          <div class="image-container">
-            <img class="img-medium" src="/squash/first_sprouts.jpeg" alt="Image of two zucchini sprouts"></img>
+          <div className="image-container">
+            <img className="img-medium" src="/squash/first_sprouts.jpeg" alt="Image of two zucchini sprouts"></img>
           </div>
 
           These are both in the zucchini box, and, as you can see, they are next to each other. Please see the following image
           for their precise location within the box:
 
-          <div class="image-container">
-            <img class="img-medium" src="/squash/first_sprouts_all_seed_locations.jpeg" alt="Image showing location of all planted squash seeds"></img>
+          <div className="image-container">
+            <img className="img-medium" src="/squash/first_sprouts_all_seed_locations.jpeg" alt="Image showing location of all planted squash seeds"></img>
           </div>
 
           Of the 13 squash seeds I planted (4 in one box and 9 in the other), the first two to sprout are direct neighbors...a curious coincidence, to the tune
@@ -49,8 +49,8 @@ export default {
         <p>
           A dog visited our yard recently and spent some time exploring the raised beds:
 
-          <div class="image-container">
-            <img class="img-medium" src="/squash/dog.jpeg" alt="Image of dog sniffing zucchini box"></img>
+          <div className="image-container">
+            <img className="img-medium" src="/squash/dog.jpeg" alt="Image of dog sniffing zucchini box"></img>
           </div>
 
           It appears from this picture that he took particular interest in exactly the area where our two sprouts appeared. This raises some intriguing possibilities:
@@ -73,8 +73,8 @@ export default {
         <p>
           The "0.27 probability" was figured using the following definitions of seed adjacency:
 
-          <div class="image-container">
-            <img class="img-medium" src="/squash/first_sprouts_all_seed_locations_neighbors.jpeg" alt="Image of overgrown raised planting bed 1"></img>
+          <div className="image-container">
+            <img className="img-medium" src="/squash/first_sprouts_all_seed_locations_neighbors.jpeg" alt="Image of overgrown raised planting bed 1"></img>
           </div>
 
           This graph contains 21 distinct pairs of neighboring seeds, and it contains 78 total distinct pairs of seeds. 21 / 78 &asymp; 0.27.

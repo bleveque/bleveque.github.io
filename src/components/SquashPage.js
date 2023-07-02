@@ -2,11 +2,14 @@ import React from 'react';
 import { Route } from 'react-router-dom';
 
 import blogContents from '../squashBlogContents/index';
+import SquashBackground from './SquashBackground';
 import './SquashPage.css';
 
 const SquashPage = () => {
+
   return (
     <div className="root">
+      <SquashBackground />
       <a href="/">[home]</a>
       <h1>Squash Blog</h1>
 
