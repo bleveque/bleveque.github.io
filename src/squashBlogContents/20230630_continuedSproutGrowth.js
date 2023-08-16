@@ -3,7 +3,7 @@ import React from 'react';
 export default {
     title: "Continued Sprout Growth",
     date: "6/30/23",
-    path: "continued-sprout-growth",
+    path: "3-continued-sprout-growth",
     contents: (
       <>
         <p>

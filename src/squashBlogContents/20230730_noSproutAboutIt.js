@@ -3,7 +3,7 @@ import React from 'react';
 export default {
     title: "No Sprout About It",
     date: "8/1/23",
-    path: "no-sprout-about-it",
+    path: "4-no-sprout-about-it",
     contents: (
       <>
         <p>

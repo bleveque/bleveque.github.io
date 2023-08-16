@@ -3,7 +3,7 @@ import React from 'react';
 export default {
     title: "First Sprouts",
     date: "6/13/23 - 6/18/23",
-    path: "first-sprouts",
+    path: "2-first-sprouts",
     contents: (
       <div>
         <p>
