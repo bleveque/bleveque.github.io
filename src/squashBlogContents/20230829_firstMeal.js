@@ -2,7 +2,7 @@ import React from 'react';
 
 export default {
     title: "First Zucchini Meal",
-    date: "8/29/23",
+    date: "8/31/23",
     path: "6-first-zucchini-meal",
     contents: (
       <>
