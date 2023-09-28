@@ -4,6 +4,7 @@ import continuedSproutGrowth from './20230630_continuedSproutGrowth';
 import noSproutAboutIt from './20230730_noSproutAboutIt';
 import firstHarvest from './20230816_firstHarvest';
 import firstMeal from './20230829_firstMeal';
+import theLoopsAndDrops from './20230926_theLoopsAndDrops';
 
 export default [
     planting,
@@ -12,4 +13,5 @@ export default [
     noSproutAboutIt,
     firstHarvest,
     firstMeal,
+    theLoopsAndDrops,
 ];
