@@ -7,6 +7,7 @@ import SquashPage from './components/SquashPage';
 import blogContents from './squashBlogContents/index';
 import SquashBlogContents from './components/SquashBlogContents';
 import BlogPage from './components/BlogPage';
+import HomePage from './components/HomePage';
 
 function App() {
   return (
@@ -26,12 +27,12 @@ function App() {
         <Route path="/squash">
           <SquashPage />
         </Route>
-        <Route path="/2023_archive_home">
+        <Route path="/new">
+          <HomePage />
+        </Route>
+        <Route path="/">
           <HomePage2023Archive />
         </Route>
-        {/* <Route path="/">
-          <HomePage />
-        </Route> */}
       </Switch>
     </HashRouter>
   );
