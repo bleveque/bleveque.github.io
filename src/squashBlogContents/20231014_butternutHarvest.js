@@ -2,7 +2,7 @@ import React from 'react';
 
 export default {
     title: "Harvest Recap",
-    date: "11/21/23",
+    date: "11/22/23",
     path: "8-harvest-recap",
     contents: (
       <>
